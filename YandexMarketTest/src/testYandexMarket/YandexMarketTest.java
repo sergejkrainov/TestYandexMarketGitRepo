@@ -1,0 +1,36 @@
+package testYandexMarket;
+
+
+
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+
+import BrowserActions.YandexMarket;
+import jUnitTests.TestYandexMarket;
+import libs.InitTest;
+
+/**
+ * Шаблон для тестировния, точка запуска тестов
+ * @author Сергей
+ *
+ */
+public class YandexMarketTest {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+
+		//Инициализация теста
+		InitTest.initBrowser();
+		
+		//Выполнение действий в браузере
+		YandexMarket.searchMobilePhone();
+		
+		//Выполнение тестов в junit
+		Result result = JUnitCore.runClasses(TestYandexMarket.class);
+		
+		System.out.println("Total number of tests " + result.getRunCount());
+		System.out.println("Total number of tests failed " + result.getFailureCount());
+	}
+
+}

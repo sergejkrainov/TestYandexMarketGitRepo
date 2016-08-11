@@ -1,0 +1,13 @@
+package Config;
+
+/**
+ * Класс для хранения настроечных параметров
+ * @author Сергей
+ *
+ */
+public class YandexMarketConfig {
+	
+	final public static String baseUrl = "https://market.yandex.ru/";
+	final public static String browserName = "firefox";
+
+}

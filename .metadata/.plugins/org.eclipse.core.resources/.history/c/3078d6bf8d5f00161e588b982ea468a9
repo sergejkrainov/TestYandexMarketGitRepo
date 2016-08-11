@@ -1,0 +1,162 @@
+package BrowserActions;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.awt.RenderingHints.Key;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+
+import Config.YandexMarketConfig;
+import variables.YandexMarketCalcVariables;
+
+/**
+ * Класс для выполнения действий в браузере
+ * @author Сергей
+ *
+ */
+public class YandexMarket {
+	public static void searchMobilePhone() throws InterruptedException {
+
+		WebDriver driver = YandexMarketCalcVariables.driver;
+		driver.get(YandexMarketConfig.baseUrl);
+		
+		driver.manage().window().maximize();
+
+		//Переходим в Каталог
+		/*driver.findElement(By.xpath("//span[@class='main-tabs__text' and text()='Каталог']")).click();
+		
+		
+		YandexMarketCalcVariables.searchMobilePhoneResults.put("isCatalogPresent", String.valueOf(
+				driver.findElement(By.xpath("//span[@class='main-tabs__text' and text()='Каталог']")).isDisplayed()));
+		
+		YandexMarketCalcVariables.searchMobilePhoneResults.put("isElectronicaPresent", String.valueOf(
+				driver.findElement(By.xpath("//h2[@class='title title_size_18' and text()='Электроника']")).isDisplayed()));
+		
+		YandexMarketCalcVariables.searchMobilePhoneResults.put("isPopularPresent", String.valueOf(
+				driver.findElement(By.xpath("//h1[@class='title title_size_22 title_indent_bottom  ']/text[text()='Популярные товары']")).isDisplayed()));
+		
+		//Двигаемся вниз
+		driver.findElement(By.xpath("/html/body/div[1]")).sendKeys(Keys.PAGE_DOWN);
+		driver.findElement(By.xpath("/html/body/div[1]")).sendKeys(Keys.PAGE_DOWN);
+		
+		
+		YandexMarketCalcVariables.searchMobilePhoneResults.put("isInterestingPresent", String.valueOf(
+				driver.findElement(By.xpath("//h1[@class='title title_size_22  box__title  ']/a[text()='Вас также могут заинтересовать']")).isDisplayed()));
+		
+		YandexMarketCalcVariables.searchMobilePhoneResults.put("isArticlesPresent", String.valueOf(
+				driver.findElement(By.xpath("//h1[@class='title title_size_22 title_indent_bottom  ']/text[text()='Статьи и подборки']")).isDisplayed()));
+		
+		//Двигаемся вверх
+		driver.findElement(By.xpath("/html/body/div[1]")).sendKeys(Keys.PAGE_UP);
+		driver.findElement(By.xpath("/html/body/div[1]")).sendKeys(Keys.PAGE_UP);
+		
+		//Переходим в раздел Электроника
+		driver.findElement(By.xpath("//h2[@class='title title_size_18' and text()='Электроника']")).click();
+		//Переходим в раздел Мобильные телефоны
+		driver.findElement(By.xpath("//div[@class='catalog-menu__list']/a[text()='Мобильные телефоны']")).click();
+		
+		int sizeLiPopulars = driver.findElements(By.xpath("//div[@class='top-3-models' and h2[@class='top-3-models__title']"
+				+ "/a[text()='Популярные']]/ul[@class='top-3-models__list']/li")).size();
+		
+		YandexMarketCalcVariables.searchMobilePhoneResults.put("popularCount", String.valueOf(sizeLiPopulars));
+
+		//Нажимаем на расширенный поиск
+		driver.findElement(By.partialLinkText("Расширенный поиск")).click();
+		
+		//Цена от
+		driver.findElement(By.xpath("//input[@id='gf-pricefrom-var']")).sendKeys("5125");
+		//Цена до
+		driver.findElement(By.xpath("//input[@id='gf-priceto-var']")).sendKeys("10123");
+		
+		if(driver.findElement(By.xpath("//input[@id='glf-in-stock-select']")).getAttribute("checked").equals("false")){
+			driver.findElement(By.xpath("//input[@id='glf-in-stock-select']")).click();
+		}
+		
+		//Выбираем тип
+		driver.findElement(By.xpath("//span[@class='title__content' and text()='Тип']")).click();
+		
+		//Выбираем смартфон
+		driver.findElement(By.xpath("//label[@class='checkbox__label' and text()='смартфон']")).click();
+		
+		//Выбираем Android
+		driver.findElement(By.xpath("//label[@class='checkbox__label' and text()='Android']")).click();
+		
+		Thread.sleep(5000);*/
+		
+
+		List<WebElement> resultPhonesAll = driver.findElements(By.xpath("//div[@class='filter-applied-results i-bem filter-applied-results_js_inited']"
+				+ "/div[@class='snippet-list snippet-list_type_vertical island']"
+				+ "/div[@class='snippet-card clearfix  i-bem snippet-card_js_inited']"));// Получаем все блоки, в которых содержится вся информация по телефонам
+
+
+		
+		List<WebElement> resultPhonesDiv = new ArrayList<WebElement>();
+		
+		Random rnd = new Random();
+		//Три раза берем рандомно телефоны из списка телефонов
+		resultPhonesDiv.add(resultPhonesAll.get(rnd.nextInt(resultPhonesAll.size())));
+		resultPhonesDiv.add(resultPhonesAll.get(rnd.nextInt(resultPhonesAll.size())));
+		resultPhonesDiv.add(resultPhonesAll.get(rnd.nextInt(resultPhonesAll.size())));
+		
+		String deviceName = "";
+		String costFrom = "";
+		String costTo = "";
+		String raiting = "";
+		List<String> deviceNameList = new ArrayList<String>();
+		List<String> costFromList = new ArrayList<String>();
+		List<String> costToList = new ArrayList<String>();
+		
+		for(WebElement list : resultPhonesAll){//Пробегаемся по результирующему списку телефонов и выводим нужную информацию
+			deviceName = list.findElement(By.xpath(".//a/span[@class='snippet-card__header-text']")).getText();
+			costFrom = list.findElement(By.xpath(".//a/div[@class='snippet-card__price i-bem snippet-card__price_js_inited']/span")).getText();
+			//costTo = list.findElement(By.xpath(".//div[@class='snippet-card__info']/a/div[@class='snippet-card__subprice']/span")).getText();
+			//текущий элемент в итерации не хочет брать для цены до в xpath ".//div[@class='snippet-card__info']/a/div[@class='snippet-card__subprice']/span"
+			//работает только для первого элемента "//div[@class='snippet-card__info']/a/div[@class='snippet-card__subprice']/span" без точки.
+			//Поэтому цену до будем извлекать из текстового поля всего объекта
+			costTo = "до " + list.getText().split("до")[1].split("руб.")[0] + " руб.";
+			raiting = list.findElement(By.xpath(".//div[@class='rating rating_outline_yes hint i-bem hint_js_inited']")).getText();//Рейтинг телефонов
+			if(raiting.equals("3.5") || raiting.equals("4.0") || raiting.equals("4.5")){//Среди списка всех телефонов выбираем телефоны с нужным рейтингом
+				deviceNameList.add(deviceName);
+				costFromList.add("от " + costFrom.replaceAll("\\W", "") + " руб.");//удаляем ? из строки
+				costToList.add("до " + costTo.replaceAll("\\W", "") + " руб.");//удаляем ? из строки
+			}
+			//System.out.println("Raiting = " + raiting);
+			//System.out.println(list.getText());
+			//System.out.println(deviceName + "  " + costFrom + "  " + costTo);
+		}
+		
+		//System.out.println("Size  = " + deviceNameList.size());
+		
+		List<String> deviceNameListResult = new ArrayList<String>();
+		List<String> costFromListResult = new ArrayList<String>();
+		List<String> costToListResult = new ArrayList<String>();
+		int rndSelected = 0;
+		while(deviceNameListResult.size() != 3){//Пока не добавили 3 элемента
+			
+			rndSelected = rnd.nextInt(deviceNameList.size());
+			deviceName = deviceNameList.get(rndSelected);
+			if(deviceNameListResult.contains(deviceName)){//Выбираем только различные элементы
+				continue;
+			}else{
+				deviceNameListResult.add(deviceNameList.get(rndSelected));
+				costFromListResult.add(costFromList.get(rndSelected));
+				costToListResult.add(costToList.get(rndSelected));
+			}
+			
+		}
+		
+		for(int i = 0; i < deviceNameListResult.size(); i++){//Выводим информацию из получившихся элементов
+			System.out.println(deviceNameListResult.get(i) + "  " + costFromListResult.get(i) + "  " + costToListResult.get(i));
+		}
+		
+		
+
+	}
+
+}
